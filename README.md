@@ -20,8 +20,9 @@
 
 各インストール手順は、それぞれのフォルダに記載します。
 
-* [managed-login](./managed-login/readme.md)
-* [spa](./spa/README.md)
+* [マネージドログイン](./managed-login/README.md)
+* [spaでui-reactで実装](./spa/README.md)
+* [spaでログイン画面を自前実装](./self-login-spa/README.md)
  
 ## 注意点 / Note
 
