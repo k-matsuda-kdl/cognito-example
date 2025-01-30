@@ -1,0 +1,44 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./app/Dockerfile
+    container_name: demo-app
+    volumes:
+      - ./src:/var/www/html/demo
+    ports:
+      - "8080:80"
+    working_dir: /var/www/html/demo
+    entrypoint:
+      - sh
+    command:
+      - -c
+      - |
+        [ -f ~/.exec-once ] || {
+          composer install --dev && touch ~/.exec-once && cp .env.dev .env && chmod -R 777 storage bootstrap/cache && php artisan route:clear && php artisan config:clear && php artisan cache:clear && php artisan migrate
+        }
+        apache2-foreground
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: mysql:8.0
+    container_name: demo-app-db
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --default-authentication-plugin=mysql_native_password  --default-time-zone=Asia/Tokyo
+    volumes:
+      - db-store:/var/lib/mysql
+      - ./db/my.cnf:/etc/my.cnf
+      - ./db/initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: dJVZm9Wq25ENv3cQ
+      MYSQL_DATABASE: demo
+      MYSQL_USER: homepage
+      MYSQL_PASSWORD: 8GKzSMPYTVNpYDnl
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 10
+    ports:
+      - 13306:3306
+volumes:
+  db-store:
