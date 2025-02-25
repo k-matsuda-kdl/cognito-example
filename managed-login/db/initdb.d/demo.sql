@@ -13,5 +13,5 @@ CREATE TABLE `demo_table` (
   `create_account_id` bigint unsigned DEFAULT NULL COMMENT '作成者',
   `updated_at` timestamp NULL DEFAULT NULL COMMENT '更新日時',
   `update_account_id` bigint unsigned DEFAULT NULL COMMENT '更新者',
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
